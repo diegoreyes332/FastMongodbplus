@@ -5,10 +5,17 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, Field, EmailStr 
 from bson import ObjectId 
 from typing import Optional, List 
+from fastapi.middleware.cors import CORSMiddleware
 import motor.motor_asyncio
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 MONGODB_URL ='mongodb+srv://diegoreyesmosquera:Estarasenmimente@cluster0.zvacvnc.mongodb.net/test'
 
@@ -33,10 +40,10 @@ class PyObjectId(ObjectId):
 
 class StudentModel(BaseModel):
    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id") 
-   Nombre: str = Field(...)
-   email: EmailStr = Field(...) 
-   Curso: str = Field(...) 
-   Edad: int = Field(..., le=40)
+   Nombre: str = Field("...")
+   email: str = Field("...") 
+   Curso: str = Field("...") 
+   Edad: int = Field("...")
 
    class Config: 
        allow_population_by_field_name = True 
